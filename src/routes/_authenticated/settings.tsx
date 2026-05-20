@@ -36,8 +36,8 @@ function SettingsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
-      <h1 className="text-3xl font-semibold">Settings</h1>
+    <div className="mx-auto max-w-3xl space-y-8">
+      <h1 className="text-4xl md:text-5xl font-bold">Settings</h1>
 
       <Section title="Onboarding">
         <p className="text-sm text-muted-foreground">Update your fitness profile any time.</p>
@@ -55,22 +55,29 @@ function SettingsPage() {
       <Section title="Integrations">
         <ul className="space-y-3">
           {WEARABLES.filter((w) => w.value !== "none").map((w) => (
-            <li key={w.value} className="flex items-center justify-between">
+            <li key={w.value} className="flex items-center justify-between p-4 rounded-lg border border-border/50">
               <div>
                 <div className="font-medium">{w.label}</div>
                 <div className="text-xs text-muted-foreground">{w.desc}</div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-3">
+                {isConnected(w.value)
+                  ? <span className="text-sm font-semibold text-mint">✓ Connected</span>
+                  : <span className="text-sm text-muted-foreground">Disconnected</span>
+                }
                 {w.value === "garmin" && (
                   <Link to="/garmin"><Button size="sm" variant="ghost">Details</Button></Link>
                 )}
-                <Button
-                  size="sm"
-                  variant={isConnected(w.value) ? "outline" : "default"}
+                <button
                   onClick={() => toggle.mutate({ provider: w.value, connected: !isConnected(w.value), device: w.label })}
+                  className={`px-4 py-1.5 rounded-lg text-sm font-semibold active:scale-95 transition-all duration-200 ${
+                    isConnected(w.value)
+                      ? "border border-border text-muted-foreground hover:border-destructive/50 hover:text-destructive"
+                      : "bg-mint text-navy hover:shadow-md hover:shadow-mint/40 hover:scale-105"
+                  }`}
                 >
                   {isConnected(w.value) ? "Disconnect" : "Connect"}
-                </Button>
+                </button>
               </div>
             </li>
           ))}
@@ -84,7 +91,12 @@ function SettingsPage() {
       <div className="rounded-2xl border-2 border-destructive/30 bg-destructive/5 p-6">
         <h2 className="flex items-center gap-2 font-semibold text-destructive"><AlertTriangle className="h-4 w-4" /> Danger Zone</h2>
         <p className="mt-2 text-sm text-muted-foreground">Permanently delete your profile and all associated data. This action cannot be undone.</p>
-        <Button variant="destructive" className="mt-4" onClick={() => { setConfirmText(""); setConfirmOpen(true); }}>Reset Profile</Button>
+        <button
+          className="mt-4 px-6 py-2.5 rounded-lg bg-destructive/20 border border-destructive/30 text-destructive font-semibold hover:bg-destructive/30 active:scale-95 transition-all duration-200"
+          onClick={() => { setConfirmText(""); setConfirmOpen(true); }}
+        >
+          Reset Profile
+        </button>
       </div>
 
       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
@@ -100,10 +112,19 @@ function SettingsPage() {
             <Input value={confirmText} onChange={(e) => setConfirmText(e.target.value)} placeholder="Confirm" />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmOpen(false)}>Cancel</Button>
-            <Button variant="destructive" disabled={confirmText.trim().toLowerCase() !== "confirm" || reset.isPending} onClick={onReset}>
-              Reset Profile
-            </Button>
+            <button
+              onClick={() => setConfirmOpen(false)}
+              className="px-5 py-2 rounded-lg border border-transparent text-muted-foreground hover:border-border hover:text-foreground active:scale-95 transition-all duration-200"
+            >
+              Cancel
+            </button>
+            <button
+              disabled={confirmText.trim().toLowerCase() !== "confirm" || reset.isPending}
+              onClick={onReset}
+              className="px-6 py-2 rounded-lg bg-destructive/20 border border-destructive/30 text-destructive font-semibold hover:bg-destructive/30 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            >
+              {reset.isPending ? "Resetting…" : "Reset Profile"}
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -113,8 +134,8 @@ function SettingsPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border bg-card p-6">
-      <h2 className="mb-3 font-semibold">{title}</h2>
+    <div className="rounded-2xl border bg-card p-8">
+      <h2 className="mb-6 text-xl font-bold">{title}</h2>
       {children}
     </div>
   );

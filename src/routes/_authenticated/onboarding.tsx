@@ -64,10 +64,26 @@ function Onboarding() {
     <div className="mx-auto max-w-2xl">
       <div className="mb-6 flex items-center justify-between">
         <Brand />
-        <span className="text-sm text-muted-foreground">Step {step} of 5</span>
+        {/* Step indicators — Mint current/done, Gray upcoming */}
+        <div className="flex items-center gap-1.5">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <div
+              key={s}
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors ${
+                s < step
+                  ? "bg-mint text-navy"
+                  : s === step
+                  ? "bg-mint text-navy ring-2 ring-mint/40"
+                  : "border-2 border-muted-foreground/30 text-muted-foreground/50"
+              }`}
+            >
+              {s < step ? "✓" : s}
+            </div>
+          ))}
+        </div>
       </div>
       <Progress value={(step / 5) * 100} className="mb-8" />
-      <div className="rounded-2xl border bg-card p-8 shadow-elevated">
+      <div className="rounded-2xl border bg-card p-8 md:p-12 shadow-elevated">
         {step === 1 && (
           <Step title="What's your fitness goal?" desc="Help us personalize your experience">
             <div className="flex flex-wrap gap-2">
@@ -165,12 +181,30 @@ function Onboarding() {
           </Step>
         )}
 
-        <div className="mt-8 flex justify-between">
-          <Button variant="ghost" onClick={() => setStep((s) => Math.max(1, s - 1))} disabled={step === 1}>Back</Button>
+        <div className="mt-10 flex justify-between gap-4">
+          <button
+            onClick={() => setStep((s) => Math.max(1, s - 1))}
+            disabled={step === 1}
+            className="px-6 py-2.5 rounded-lg border-2 border-indigo-400 text-indigo-400 font-semibold hover:bg-indigo-400/10 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+          >
+            Back
+          </button>
           {step < 5 ? (
-            <Button onClick={() => setStep((s) => s + 1)} disabled={!canNext[step]}>Next →</Button>
+            <button
+              onClick={() => setStep((s) => s + 1)}
+              disabled={!canNext[step]}
+              className="px-8 py-2.5 rounded-lg bg-mint text-navy font-semibold hover:shadow-lg hover:shadow-mint/50 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none transition-all duration-200"
+            >
+              Next →
+            </button>
           ) : (
-            <Button onClick={finish} disabled={!canNext[5] || update.isPending}>Complete</Button>
+            <button
+              onClick={finish}
+              disabled={!canNext[5] || update.isPending}
+              className="px-8 py-2.5 rounded-lg bg-mint text-navy font-semibold hover:shadow-lg hover:shadow-mint/50 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-200"
+            >
+              {update.isPending ? "Saving…" : "Complete ✓"}
+            </button>
           )}
         </div>
       </div>
@@ -186,8 +220,8 @@ function Onboarding() {
 function Step({ title, desc, children }: { title: string; desc: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="text-2xl font-semibold">{title}</h2>
-      <p className="mt-1 mb-6 text-muted-foreground">{desc}</p>
+      <h2 className="text-2xl md:text-3xl font-bold">{title}</h2>
+      <p className="mt-2 mb-6 text-base text-muted-foreground">{desc}</p>
       {children}
     </div>
   );

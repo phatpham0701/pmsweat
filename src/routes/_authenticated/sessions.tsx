@@ -43,8 +43,8 @@ function SessionsPage() {
     ) : null;
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-semibold">Sessions</h1>
+    <div className="space-y-8 max-w-4xl">
+      <h1 className="text-4xl md:text-5xl font-bold">Sessions</h1>
 
       <div className="flex flex-wrap gap-2">
         <Button size="sm" variant={!filter ? "default" : "outline"} onClick={() => setFilter(null)}>All</Button>
