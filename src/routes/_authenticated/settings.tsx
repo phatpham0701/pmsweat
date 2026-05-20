@@ -37,7 +37,7 @@ function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <h1 className="text-3xl font-semibold">Settings</h1>
+      <h1 className="text-4xl md:text-5xl font-bold">Settings</h1>
 
       <Section title="Onboarding">
         <p className="text-sm text-muted-foreground">Update your fitness profile any time.</p>
@@ -118,7 +118,7 @@ function SettingsPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-2xl border bg-card p-6">
-      <h2 className="mb-3 font-semibold">{title}</h2>
+      <h2 className="mb-4 text-xl font-bold">{title}</h2>
       {children}
     </div>
   );

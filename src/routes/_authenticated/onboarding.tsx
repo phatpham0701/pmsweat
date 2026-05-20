@@ -202,8 +202,8 @@ function Onboarding() {
 function Step({ title, desc, children }: { title: string; desc: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="text-2xl font-semibold">{title}</h2>
-      <p className="mt-1 mb-6 text-muted-foreground">{desc}</p>
+      <h2 className="text-2xl md:text-3xl font-bold">{title}</h2>
+      <p className="mt-2 mb-6 text-base text-muted-foreground">{desc}</p>
       {children}
     </div>
   );

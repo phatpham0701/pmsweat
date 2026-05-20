@@ -23,7 +23,7 @@ function ProfilePage() {
           <AvatarDisplay profile={p ?? null} size={96} />
           <div className="flex-1 text-center sm:text-left space-y-2">
             {/* Name — White/bold */}
-            <h1 className="text-3xl font-bold">{p?.name || "Unnamed"}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold">{p?.name || "Unnamed"}</h1>
 
             {/* Athlete type — Mint badge */}
             {p?.athlete_type && (
@@ -47,7 +47,7 @@ function ProfilePage() {
 
       {/* Stats */}
       <div className="rounded-2xl border bg-card p-6">
-        <h2 className="mb-4 font-semibold">Physical stats</h2>
+        <h2 className="mb-4 text-xl font-bold">Physical stats</h2>
         <div className="space-y-3">
           <StatRow label="Height" value={p?.height_cm ? `${p.height_cm} cm` : null} />
           <StatRow label="Weight" value={p?.weight_kg ? `${p.weight_kg} kg` : null} />
@@ -63,7 +63,7 @@ function ProfilePage() {
 
       {/* Training profile */}
       <div className="rounded-2xl border bg-card p-6">
-        <h2 className="mb-4 font-semibold">Training profile</h2>
+        <h2 className="mb-4 text-xl font-bold">Training profile</h2>
         <div className="space-y-3">
           <StatRow label="Frequency" value={p?.training_frequency ? `${p.training_frequency} days/week` : null} />
           <StatRow label="Wearable" value={p?.wearable_device} />

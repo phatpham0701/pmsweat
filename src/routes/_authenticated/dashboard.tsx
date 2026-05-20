@@ -16,11 +16,11 @@ function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">
+      <div className="pt-2">
+        <h1 className="text-4xl md:text-5xl font-bold leading-tight">
           Hi, {profile.data?.nickname || profile.data?.name || "Athlete"} 👋
         </h1>
-        <p className="text-muted-foreground">
+        <p className="mt-1 text-base text-muted-foreground">
           {profile.data?.athlete_type ?? "Hybrid Athlete"} · {profile.data?.location ?? "—"}
         </p>
       </div>
@@ -83,7 +83,7 @@ function Dashboard() {
       <div className="grid gap-6 md:grid-cols-2">
         {/* Integrations */}
         <div className="rounded-2xl border bg-card p-6">
-          <h2 className="mb-4 flex items-center gap-2 font-semibold">
+          <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
             <Watch className="h-4 w-4" /> Integrations
           </h2>
           <ul className="space-y-2">
@@ -103,7 +103,7 @@ function Dashboard() {
 
         {/* Recent Sessions */}
         <div className="rounded-2xl border bg-card p-6">
-          <h2 className="mb-4 flex items-center gap-2 font-semibold">
+          <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
             <Activity className="h-4 w-4" /> Recent Sessions
           </h2>
           <ul className="space-y-3">
