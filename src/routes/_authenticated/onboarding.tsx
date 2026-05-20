@@ -64,7 +64,23 @@ function Onboarding() {
     <div className="mx-auto max-w-2xl">
       <div className="mb-6 flex items-center justify-between">
         <Brand />
-        <span className="text-sm text-muted-foreground">Step {step} of 5</span>
+        {/* Step indicators — Mint current/done, Gray upcoming */}
+        <div className="flex items-center gap-1.5">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <div
+              key={s}
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors ${
+                s < step
+                  ? "bg-mint text-navy"
+                  : s === step
+                  ? "bg-mint text-navy ring-2 ring-mint/40"
+                  : "border-2 border-muted-foreground/30 text-muted-foreground/50"
+              }`}
+            >
+              {s < step ? "✓" : s}
+            </div>
+          ))}
+        </div>
       </div>
       <Progress value={(step / 5) * 100} className="mb-8" />
       <div className="rounded-2xl border bg-card p-8 shadow-elevated">

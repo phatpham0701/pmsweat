@@ -10,47 +10,86 @@ export const Route = createFileRoute("/_authenticated/profile")({
 
 function ProfilePage() {
   const { data: p } = useProfile();
+
+  const bmi = p?.height_cm && p?.weight_kg
+    ? (p.weight_kg / ((p.height_cm / 100) ** 2)).toFixed(1)
+    : null;
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
+      {/* Header card */}
       <div className="rounded-2xl border bg-card p-8 shadow-elevated">
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
           <AvatarDisplay profile={p ?? null} size={96} />
-          <div className="flex-1">
-            <h1 className="text-2xl font-semibold">{p?.name || "Unnamed"}</h1>
-            <p className="text-muted-foreground">{p?.nickname && `@${p.nickname} · `}{p?.athlete_type ?? "Hybrid Athlete"}</p>
-            <p className="text-sm text-muted-foreground">{p?.location ?? "—"}</p>
+          <div className="flex-1 text-center sm:text-left space-y-2">
+            {/* Name — White/bold */}
+            <h1 className="text-3xl font-bold">{p?.name || "Unnamed"}</h1>
+
+            {/* Athlete type — Mint badge */}
+            {p?.athlete_type && (
+              <div className="inline-block rounded-full border border-mint/30 bg-mint/10 px-4 py-1">
+                <p className="text-sm font-medium text-mint">{p.athlete_type}</p>
+              </div>
+            )}
+
+            {/* Location / nickname — Gray secondary */}
+            <p className="text-sm text-muted-foreground">
+              {p?.nickname && `@${p.nickname}`}
+              {p?.nickname && p?.location && " · "}
+              {p?.location}
+            </p>
           </div>
-          <Link to="/onboarding"><Button variant="outline">Edit Avatar</Button></Link>
+          <Link to="/onboarding">
+            <Button variant="outline">Edit Profile</Button>
+          </Link>
         </div>
       </div>
+
+      {/* Stats */}
       <div className="rounded-2xl border bg-card p-6">
-        <h2 className="mb-4 font-semibold">Profile details</h2>
-        <dl className="grid gap-3 sm:grid-cols-2">
-          <Detail label="Gender" value={p?.gender} />
-          <Detail label="Date of birth" value={p?.date_of_birth} />
-          <Detail label="Height" value={p?.height_cm ? `${p.height_cm} cm` : null} />
-          <Detail label="Weight" value={p?.weight_kg ? `${p.weight_kg} kg` : null} />
-          <Detail label="Training frequency" value={p?.training_frequency} />
-          <Detail label="Wearable" value={p?.wearable_device} />
-          <Detail label="Sports" value={p?.sports?.join(", ")} />
-          <Detail label="Goals" value={p?.fitness_goals?.join(", ")} />
-        </dl>
+        <h2 className="mb-4 font-semibold">Physical stats</h2>
+        <div className="space-y-3">
+          <StatRow label="Height" value={p?.height_cm ? `${p.height_cm} cm` : null} />
+          <StatRow label="Weight" value={p?.weight_kg ? `${p.weight_kg} kg` : null} />
+          {/* BMI — Mint with checkmark */}
+          <div className="flex items-center justify-between py-1 border-b border-border/50 last:border-0">
+            <span className="text-sm text-muted-foreground">BMI</span>
+            <span className="text-sm font-semibold text-mint">{bmi ? `${bmi} ✓` : "—"}</span>
+          </div>
+          <StatRow label="Gender" value={p?.gender} />
+          <StatRow label="Date of birth" value={p?.date_of_birth} />
+        </div>
       </div>
-      <div className="flex gap-2">
+
+      {/* Training profile */}
+      <div className="rounded-2xl border bg-card p-6">
+        <h2 className="mb-4 font-semibold">Training profile</h2>
+        <div className="space-y-3">
+          <StatRow label="Frequency" value={p?.training_frequency ? `${p.training_frequency} days/week` : null} />
+          <StatRow label="Wearable" value={p?.wearable_device} />
+          <StatRow label="Sports" value={p?.sports?.join(", ")} />
+          <StatRow label="Goals" value={p?.fitness_goals?.join(", ")} />
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-3">
         <Link to="/onboarding">
           <Button>{p?.onboarding_completed ? "Edit Fitness Profile" : "Finish Onboarding"}</Button>
         </Link>
-        <Link to="/settings"><Button variant="outline">Go to Settings →</Button></Link>
+        <Link to="/settings">
+          <Button variant="outline">Go to Settings →</Button>
+        </Link>
       </div>
     </div>
   );
 }
 
-function Detail({ label, value }: { label: string; value?: string | null }) {
+function StatRow({ label, value }: { label: string; value?: string | null }) {
   return (
-    <div>
-      <dt className="text-xs uppercase tracking-wide text-muted-foreground">{label}</dt>
-      <dd className="text-sm">{value || "—"}</dd>
+    <div className="flex items-center justify-between py-1 border-b border-border/50 last:border-0">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="text-sm font-semibold">{value || "—"}</span>
     </div>
   );
 }

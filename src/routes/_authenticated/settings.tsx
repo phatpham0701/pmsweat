@@ -55,12 +55,16 @@ function SettingsPage() {
       <Section title="Integrations">
         <ul className="space-y-3">
           {WEARABLES.filter((w) => w.value !== "none").map((w) => (
-            <li key={w.value} className="flex items-center justify-between">
+            <li key={w.value} className="flex items-center justify-between p-4 rounded-lg border border-border/50">
               <div>
                 <div className="font-medium">{w.label}</div>
                 <div className="text-xs text-muted-foreground">{w.desc}</div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-3">
+                {isConnected(w.value)
+                  ? <span className="text-sm font-semibold text-mint">✓ Connected</span>
+                  : <span className="text-sm text-muted-foreground">Disconnected</span>
+                }
                 {w.value === "garmin" && (
                   <Link to="/garmin"><Button size="sm" variant="ghost">Details</Button></Link>
                 )}
