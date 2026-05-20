@@ -39,15 +39,43 @@ export const JOHNNY_INTEGRATIONS: Integration[] = [
   { id: "i5", user_id: "demo-johnny", provider: "fitbit", connected: true, last_sync: today().toISOString(), device: "Sense 2" },
 ];
 
-// Weekly pattern: Mon..Sun
+// 14 sessions/week × 90 days / 7 ≈ 180 sessions, 1495 min/week ≈ 320 hours total
 const WEEKLY: Array<Array<{ sport: string; duration: number; load: number; hour: number; notes?: string }>> = [
-  [{ sport: "Gym", duration: 60, load: 40, hour: 9 }, { sport: "Running", duration: 50, load: 45, hour: 18, notes: "Easy 10km" }], // Mon
-  [{ sport: "Swimming", duration: 45, load: 50, hour: 6, notes: "2000m" }, { sport: "Cycling", duration: 180, load: 130, hour: 17, notes: "Road 80km Z3" }], // Tue
-  [{ sport: "Yoga", duration: 30, load: 15, hour: 9 }], // Wed
-  [{ sport: "Cycling", duration: 60, load: 160, hour: 18, notes: "Interval hard" }], // Thu
-  [{ sport: "Gym", duration: 60, load: 50, hour: 9 }, { sport: "Running", duration: 65, load: 70, hour: 17, notes: "Trail 12km" }], // Fri
-  [{ sport: "Cycling", duration: 300, load: 240, hour: 8, notes: "Long ride 150km Z2" }], // Sat
-  [{ sport: "Yoga", duration: 30, load: 20, hour: 9 }], // Sun
+  // Mon: Gym + Running = 140 min
+  [
+    { sport: "Gym", duration: 65, load: 42, hour: 7, notes: "Strength & core" },
+    { sport: "Running", duration: 75, load: 52, hour: 18, notes: "Easy run 14km" },
+  ],
+  // Tue: Swimming + Cycling = 345 min
+  [
+    { sport: "Swimming", duration: 75, load: 58, hour: 6, notes: "2500m technique" },
+    { sport: "Cycling", duration: 270, load: 145, hour: 14, notes: "Road 120km Z2-Z3" },
+  ],
+  // Wed: Running + Yoga = 120 min
+  [
+    { sport: "Running", duration: 90, load: 70, hour: 6, notes: "Trail 16km" },
+    { sport: "Yoga", duration: 30, load: 15, hour: 18 },
+  ],
+  // Thu: Cycling + Running = 160 min
+  [
+    { sport: "Cycling", duration: 90, load: 175, hour: 7, notes: "Interval hard 4×10min Z5" },
+    { sport: "Running", duration: 70, load: 62, hour: 17, notes: "Brick run 12km" },
+  ],
+  // Fri: Gym + Swimming = 130 min
+  [
+    { sport: "Gym", duration: 65, load: 52, hour: 7, notes: "Strength & mobility" },
+    { sport: "Swimming", duration: 65, load: 55, hour: 17, notes: "Open water 1.5km" },
+  ],
+  // Sat: Cycling + Running = 510 min
+  [
+    { sport: "Cycling", duration: 390, load: 255, hour: 7, notes: "Long ride 160km Z2" },
+    { sport: "Running", duration: 120, load: 95, hour: 14, notes: "Half-marathon pace 21km" },
+  ],
+  // Sun: Swimming + Yoga = 90 min
+  [
+    { sport: "Swimming", duration: 60, load: 45, hour: 8, notes: "Recovery 1800m easy" },
+    { sport: "Yoga", duration: 30, load: 20, hour: 17, notes: "Recovery yoga" },
+  ],
 ];
 
 export function generateJohnnySessions(): Session[] {
@@ -55,19 +83,16 @@ export function generateJohnnySessions(): Session[] {
   for (let d = 0; d < 90; d++) {
     const date = daysAgo(d);
     const dow = (date.getDay() + 6) % 7; // 0=Mon
-    const day = WEEKLY[dow];
-    for (const item of day) {
+    for (const item of WEEKLY[dow]) {
       const start = new Date(date);
-      start.setHours(item.hour, Math.floor(Math.random() * 30), 0, 0);
-      // skip with low prob to feel real
-      if (Math.random() < 0.05) continue;
+      start.setHours(item.hour, Math.floor(Math.random() * 20), 0, 0);
       out.push({
         id: `s-${d}-${item.sport}-${item.hour}`,
         user_id: "demo-johnny",
         sport: item.sport,
         started_at: start.toISOString(),
-        duration_min: item.duration + Math.floor((Math.random() - 0.5) * 10),
-        load_au: item.load + Math.floor((Math.random() - 0.5) * 10),
+        duration_min: item.duration + Math.floor((Math.random() - 0.5) * 8),
+        load_au: item.load + Math.floor((Math.random() - 0.5) * 8),
         notes: item.notes ?? null,
         metrics: {},
       });

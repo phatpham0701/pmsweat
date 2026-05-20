@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useProfile, useMetrics, useSessions, useIntegrations } from "@/hooks/use-pm-sweat";
-import { Activity, Heart, Moon, Zap, Watch } from "lucide-react";
+import { Activity, Flame, Heart, Moon, TrendingUp, Watch, Zap } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — PM Sweat" }] }),
@@ -20,11 +20,13 @@ function Dashboard() {
         <h1 className="text-3xl font-semibold">Hi, {profile.data?.nickname || profile.data?.name || "Athlete"} 👋</h1>
         <p className="text-muted-foreground">{profile.data?.athlete_type ?? "Hybrid Athlete"} · {profile.data?.location ?? "—"}</p>
       </div>
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
         <MetricCard icon={Moon} label="Sleep Score" value={m?.sleep_score ?? "—"} />
         <MetricCard icon={Zap} label="Readiness" value={m?.readiness_score ?? "—"} />
         <MetricCard icon={Activity} label="Weekly Load" value={`${m?.weekly_training_load ?? 0} AU`} />
         <MetricCard icon={Heart} label="Recovery" value={m?.recovery_status ?? "—"} />
+        <MetricCard icon={Flame} label="Active Calories" value={m?.active_calories_goal ? `${m.active_calories_goal} kcal` : "—"} />
+        <MetricCard icon={TrendingUp} label="HR Zone" value={m?.avg_hr_zone ?? "—"} />
       </div>
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-2xl border bg-card p-6">
@@ -42,15 +44,17 @@ function Dashboard() {
           <h2 className="mb-4 flex items-center gap-2 font-semibold"><Activity className="h-4 w-4" /> Recent Sessions</h2>
           <ul className="space-y-3">
             {sessions.data?.length ? sessions.data.map((s) => (
-              <li key={s.id} className="flex items-center justify-between text-sm">
-                <div>
-                  <div className="font-medium">{s.sport}</div>
-                  <div className="text-xs text-muted-foreground">{new Date(s.started_at).toLocaleString()}</div>
-                </div>
-                <div className="text-right">
-                  <div>{s.duration_min}m</div>
-                  <div className="text-xs text-muted-foreground">{s.load_au} AU</div>
-                </div>
+              <li key={s.id}>
+                <Link to="/sessions/$sessionId" params={{ sessionId: s.id }} className="flex items-center justify-between text-sm hover:bg-accent/50 rounded-lg px-2 py-1 -mx-2 transition-colors">
+                  <div>
+                    <div className="font-medium">{s.sport}</div>
+                    <div className="text-xs text-muted-foreground">{new Date(s.started_at).toLocaleString()}</div>
+                  </div>
+                  <div className="text-right">
+                    <div>{s.duration_min}m</div>
+                    <div className="text-xs text-muted-foreground">{s.load_au} AU</div>
+                  </div>
+                </Link>
               </li>
             )) : <li className="text-sm text-muted-foreground">No sessions yet.</li>}
           </ul>

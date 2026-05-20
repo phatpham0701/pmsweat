@@ -21,6 +21,15 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
 
 type Draft = Partial<Profile>;
 
+function calcAge(dob: string): number {
+  const today = new Date();
+  const birth = new Date(dob);
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+  return age;
+}
+
 function Onboarding() {
   const { data: profile } = useProfile();
   const update = useUpdateProfile();
@@ -39,7 +48,8 @@ function Onboarding() {
 
   const canNext: Record<number, boolean> = {
     1: (draft.fitness_goals ?? []).length > 0 && (!draft.fitness_goals?.includes("Custom") || !!draft.custom_goal),
-    2: !!(draft.name && draft.name.length >= 2 && draft.gender && draft.date_of_birth && draft.height_cm && draft.weight_kg),
+    2: !!(draft.name && draft.name.length >= 2 && draft.gender && draft.date_of_birth && draft.height_cm && draft.weight_kg) &&
+       (draft.date_of_birth ? calcAge(draft.date_of_birth) >= 13 && calcAge(draft.date_of_birth) <= 100 : false),
     3: !!draft.wearable_device,
     4: (draft.sports ?? []).length > 0 && !!draft.training_frequency,
     5: !!draft.consent_given,
@@ -88,7 +98,12 @@ function Onboarding() {
                   {GENDERS.map((g) => (<label key={g.value} className="flex items-center gap-2 rounded-md border p-2 text-sm cursor-pointer"><RadioGroupItem value={g.value} />{g.label}</label>))}
                 </RadioGroup>
               </Field>
-              <Field label="Date of birth *"><Input type="date" value={draft.date_of_birth ?? ""} onChange={(e) => set({ date_of_birth: e.target.value })} /></Field>
+              <Field label="Date of birth *">
+                <Input type="date" value={draft.date_of_birth ?? ""} onChange={(e) => set({ date_of_birth: e.target.value })} />
+                {draft.date_of_birth && (calcAge(draft.date_of_birth) < 13 || calcAge(draft.date_of_birth) > 100) && (
+                  <p className="mt-1 text-xs text-destructive">Age must be between 13 and 100 years.</p>
+                )}
+              </Field>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Height (cm) *"><Input type="number" min={140} max={230} value={draft.height_cm ?? ""} onChange={(e) => set({ height_cm: Number(e.target.value) || null })} /></Field>
                 <Field label="Weight (kg) *"><Input type="number" min={30} max={200} value={draft.weight_kg ?? ""} onChange={(e) => set({ weight_kg: Number(e.target.value) || null })} /></Field>

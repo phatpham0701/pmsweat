@@ -60,13 +60,18 @@ function SettingsPage() {
                 <div className="font-medium">{w.label}</div>
                 <div className="text-xs text-muted-foreground">{w.desc}</div>
               </div>
-              <Button
-                size="sm"
-                variant={isConnected(w.value) ? "outline" : "default"}
-                onClick={() => toggle.mutate({ provider: w.value, connected: !isConnected(w.value), device: w.label })}
-              >
-                {isConnected(w.value) ? "Disconnect" : "Connect"}
-              </Button>
+              <div className="flex gap-2">
+                {w.value === "garmin" && (
+                  <Link to="/garmin"><Button size="sm" variant="ghost">Details</Button></Link>
+                )}
+                <Button
+                  size="sm"
+                  variant={isConnected(w.value) ? "outline" : "default"}
+                  onClick={() => toggle.mutate({ provider: w.value, connected: !isConnected(w.value), device: w.label })}
+                >
+                  {isConnected(w.value) ? "Disconnect" : "Connect"}
+                </Button>
+              </div>
             </li>
           ))}
         </ul>
