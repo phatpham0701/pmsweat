@@ -83,7 +83,7 @@ function Onboarding() {
         </div>
       </div>
       <Progress value={(step / 5) * 100} className="mb-8" />
-      <div className="rounded-2xl border bg-card p-8 shadow-elevated">
+      <div className="rounded-2xl border bg-card p-8 md:p-12 shadow-elevated">
         {step === 1 && (
           <Step title="What's your fitness goal?" desc="Help us personalize your experience">
             <div className="flex flex-wrap gap-2">
@@ -181,7 +181,7 @@ function Onboarding() {
           </Step>
         )}
 
-        <div className="mt-8 flex justify-between">
+        <div className="mt-10 flex justify-between gap-4">
           <Button variant="ghost" onClick={() => setStep((s) => Math.max(1, s - 1))} disabled={step === 1}>Back</Button>
           {step < 5 ? (
             <Button onClick={() => setStep((s) => s + 1)} disabled={!canNext[step]}>Next →</Button>

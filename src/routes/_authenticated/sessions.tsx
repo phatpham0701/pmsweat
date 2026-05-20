@@ -43,7 +43,7 @@ function SessionsPage() {
     ) : null;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 max-w-4xl">
       <h1 className="text-4xl md:text-5xl font-bold">Sessions</h1>
 
       <div className="flex flex-wrap gap-2">

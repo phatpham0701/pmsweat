@@ -15,7 +15,7 @@ function Dashboard() {
   const m = metrics.data;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10 max-w-7xl">
       <div className="pt-2">
         <h1 className="text-4xl md:text-5xl font-bold leading-tight">
           Hi, {profile.data?.nickname || profile.data?.name || "Athlete"} 👋
@@ -26,7 +26,7 @@ function Dashboard() {
       </div>
 
       {/* Metrics grid — color-coded */}
-      <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
+      <div className="grid gap-6 grid-cols-2 md:grid-cols-3">
         {/* Sleep — Mint (primary positive) */}
         <div className="rounded-2xl border border-mint/30 bg-mint/5 p-5 shadow-elevated">
           <div className="flex items-center gap-2 text-sm text-mint/70"><Moon className="h-4 w-4" />Sleep Score</div>

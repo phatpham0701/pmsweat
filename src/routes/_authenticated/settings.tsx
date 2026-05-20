@@ -36,7 +36,7 @@ function SettingsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-8">
       <h1 className="text-4xl md:text-5xl font-bold">Settings</h1>
 
       <Section title="Onboarding">
@@ -117,8 +117,8 @@ function SettingsPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border bg-card p-6">
-      <h2 className="mb-4 text-xl font-bold">{title}</h2>
+    <div className="rounded-2xl border bg-card p-8">
+      <h2 className="mb-6 text-xl font-bold">{title}</h2>
       {children}
     </div>
   );

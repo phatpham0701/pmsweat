@@ -16,9 +16,9 @@ function ProfilePage() {
     : null;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-8">
       {/* Header card */}
-      <div className="rounded-2xl border bg-card p-8 shadow-elevated">
+      <div className="rounded-2xl border bg-card p-8 pb-10 shadow-elevated">
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
           <AvatarDisplay profile={p ?? null} size={96} />
           <div className="flex-1 text-center sm:text-left space-y-2">
