@@ -41,13 +41,13 @@ function SettingsPage() {
 
       <Section title="Onboarding">
         <p className="text-sm text-muted-foreground">Update your fitness profile any time.</p>
-        <Link to="/onboarding"><Button className="mt-3">Retake Onboarding</Button></Link>
+        <Link to="/onboarding"><Button className="mt-3 hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200">Retake Onboarding</Button></Link>
       </Section>
 
       <Section title="Appearance">
         <div className="flex gap-2">
           {(["light", "dark", "system"] as const).map((m) => (
-            <Button key={m} variant={mode === m ? "default" : "outline"} size="sm" onClick={() => setTheme(m)} className="capitalize">{m}</Button>
+            <Button key={m} variant={mode === m ? "default" : "outline"} size="sm" onClick={() => setTheme(m)} className="capitalize active:scale-95 transition-all duration-200">{m}</Button>
           ))}
         </div>
       </Section>
@@ -66,7 +66,7 @@ function SettingsPage() {
                   : <span className="text-sm text-muted-foreground">Disconnected</span>
                 }
                 {w.value === "garmin" && (
-                  <Link to="/garmin"><Button size="sm" variant="ghost">Details</Button></Link>
+                  <Link to="/garmin"><Button size="sm" variant="ghost" className="active:scale-95 transition-all duration-200">Details</Button></Link>
                 )}
                 <button
                   onClick={() => toggle.mutate({ provider: w.value, connected: !isConnected(w.value), device: w.label })}
@@ -85,7 +85,7 @@ function SettingsPage() {
       </Section>
 
       <Section title="Account">
-        <Button variant="outline" onClick={async () => { await signOut(); nav({ to: "/" }); }}>Log out</Button>
+        <Button variant="outline" className="active:scale-95 transition-all duration-200" onClick={async () => { await signOut(); nav({ to: "/" }); }}>Log out</Button>
       </Section>
 
       <div className="rounded-2xl border-2 border-destructive/30 bg-destructive/5 p-6">

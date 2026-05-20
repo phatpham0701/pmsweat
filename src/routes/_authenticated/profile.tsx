@@ -40,7 +40,7 @@ function ProfilePage() {
             </p>
           </div>
           <Link to="/onboarding">
-            <Button variant="outline">Edit Profile</Button>
+            <Button variant="outline" className="hover:scale-105 active:scale-95 transition-all duration-200">Edit Profile</Button>
           </Link>
         </div>
       </div>
@@ -75,10 +75,10 @@ function ProfilePage() {
       {/* Actions */}
       <div className="flex gap-3">
         <Link to="/onboarding">
-          <Button>{p?.onboarding_completed ? "Edit Fitness Profile" : "Finish Onboarding"}</Button>
+          <Button className="hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200">{p?.onboarding_completed ? "Edit Fitness Profile" : "Finish Onboarding"}</Button>
         </Link>
         <Link to="/settings">
-          <Button variant="outline">Go to Settings →</Button>
+          <Button variant="outline" className="hover:scale-105 active:scale-95 transition-all duration-200">Go to Settings →</Button>
         </Link>
       </div>
     </div>
